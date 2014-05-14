@@ -1,0 +1,11 @@
+funsets/lib_managed/
+funsets/target/
+objsets/.idea/
+objsets/lib_managed/
+objsets/target/
+recfun/.idea/
+recfun/lib_managed/
+results.log
+funsets/.idea/
+recfun/target/
+
