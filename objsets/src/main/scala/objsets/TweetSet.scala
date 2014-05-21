@@ -106,6 +106,8 @@ abstract class TweetSet {
    * This method takes a function and applies it to every element in the set.
    */
   def foreach(f: Tweet => Unit): Unit
+
+  def isEmpty: Boolean = true
 }
 
 class Empty extends TweetSet {
@@ -164,11 +166,14 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     right.foreach(f)
   }
 
+  override def isEmpty = false
+
   override def mostRetweeted: Tweet = {
     def getMore(x: TweetSet, current: Tweet): Tweet = {
-      x match {
-        case n: NonEmpty => if (x.mostRetweeted.retweets > current.retweets) x.mostRetweeted else current
-        case e: Empty => current
+      if (x.isEmpty) current
+      else {
+        val mostNestedRetweeted = x.mostRetweeted
+        if (mostNestedRetweeted.retweets > current.retweets) mostNestedRetweeted else current
       }
     }
 
@@ -177,7 +182,6 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
   def descendingByRetweet: TweetList = {
     val copy = filter(p => true)
-
     new Cons(copy.mostRetweeted, (copy remove copy.mostRetweeted).descendingByRetweet)
   }
 }
