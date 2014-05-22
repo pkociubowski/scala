@@ -132,8 +132,15 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def combine(trees: List[CodeTree]): List[CodeTree] = {
+    def sort(list: List[CodeTree], newElem: Fork): List[CodeTree] = {
+      if(list.isEmpty) newElem :: Nil
+      else if (weight(list.head) >  weight(newElem)) newElem :: list
+      else list.head :: sort( list.tail, newElem )
+    }
 
+    sort(trees.tail.tail, makeCodeTree(trees.head, trees.tail.head))
+  }
   /**
    * This function will be called in the following way:
    *
